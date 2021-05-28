@@ -1,0 +1,54 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600&family=Roboto&display=swap');
+
+:root {
+    --darkModeBackgroundColor: #282b30;
+    --darkModeFooterColor: #1e2124;
+
+    --titleFont: 'Nunito', sans-serif;
+    --textFont: 'Roboto', sans-serif;
+
+    --darkModeTextColor: #ffffff;
+}
+
+* {
+    font-family: var(--textFont);
+}
+
+.loadingContainer {
+    display: flex;
+    flex-wrap: wrap;
+
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    width: 100%;
+    height: 100%;
+
+    justify-content: center;
+    align-content: center;
+
+    background-color: var(--darkModeBackgroundColor);
+    color: var(--darkModeTextColor);
+
+    font-size: 500%;
+}
+
+.loader {
+    border: 6px solid #f3f3f3; 
+    border-top: 6px solid #1f9cf0;
+    border-radius: 50%;
+    width: 64px;
+    height: 64px;
+    animation: spin 1s linear infinite;
+}
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.flexBreak {
+    flex-basis: 100%;
+    height: 0;
+}

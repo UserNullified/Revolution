@@ -1,0 +1,23 @@
+{
+  "name": "revolution",
+  "version": "1.0.0",
+  "description": "Let's revolutionize the Minecraft launcher!",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/UserNullified/Revolution"
+  },
+  "keywords": [
+    "revolution",
+    "launcher",
+    "minecraft"
+  ],
+  "author": "UserNullified",
+  "license": "GPL-3.0-or-later",
+  "devDependencies": {
+    "electron": "^13.0.1"
+  }
+}
