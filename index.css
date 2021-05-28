@@ -1,23 +1,30 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600&family=Roboto&display=swap');
 
 :root {
-    --darkModeBackgroundColor: #282b30;
-    --darkModeFooterColor: #1e2124;
+    --main1: #282b30;
+    --main2: #1e2124;
+    --main3: #16181a;
 
     --titleFont: 'Nunito', sans-serif;
     --textFont: 'Roboto', sans-serif;
 
-    --darkModeTextColor: #ffffff;
+    --textColor: #ffffff;
 }
 
 * {
     font-family: var(--textFont);
+    color: white;
 }
 
-.loadingContainer {
-    display: flex;
-    flex-wrap: wrap;
+html {
+    height: 100%;
+}
 
+body {
+    overflow: hidden;
+}
+
+.transitionContainer {
     position: absolute;
     left: 0;
     top: 0;
@@ -25,30 +32,58 @@
     width: 100%;
     height: 100%;
 
-    justify-content: center;
-    align-content: center;
-
-    background-color: var(--darkModeBackgroundColor);
-    color: var(--darkModeTextColor);
+    background-color: var(--main2);
+    color: var(--textColor);
 
     font-size: 500%;
+
+    animation-name: hideTransition;
+    animation-duration: 0.6s;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+    animation-delay: 1.25s;
+    animation-fill-mode: both;
+
+    opacity: 1;
 }
 
-.loader {
-    border: 6px solid #f3f3f3; 
-    border-top: 6px solid #1f9cf0;
-    border-radius: 50%;
-    width: 64px;
-    height: 64px;
-    animation: spin 1s linear infinite;
-}
-  
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+@keyframes hideTransition {
+    from {transform: scale(1); opacity: 1; background-color: var(--main2);}
+    to {transform: scale(1.5); opacity: 0; z-index: -1;}
 }
 
-.flexBreak {
-    flex-basis: 100%;
-    height: 0;
+@keyframes showTransition {
+    from {transform: scale(1.5); opacity: 0; z-index: -1;}
+    to {transform: scale(1); opacity: 1; z-index: 0;}
+}
+
+.logoText {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -49.258px;
+    margin-top: -96px;
+}
+
+.loadingBarBack {
+    position: absolute;
+
+    bottom: 0;
+    left: 0;
+
+    width: 100%;
+    height: 25px;
+    background-color: var(--main3);
+}
+
+.loadingBarFront {
+    width: 0%;
+    height: 100%;
+    background-color: limegreen;
+    animation: loading 1s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes loading {
+    from {width: 0%;}
+    to {width: 100%;}
 }

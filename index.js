@@ -1,7 +1,3 @@
-function init () {
-    let loadingInfoText = ["Starting up!", "Finding Modpack JSON!", "Finishing up!"]
-    let loadingStep = 0
-    let element = document.getElementById('loadingInfoText')
-}
+var lastWindow = "main"
 
-init()
+// document.getElementById('menuContainer').style.backgroundImage = "url('assets/background" + (Math.floor(Math.random() * 3) + 1) + ".png')"
