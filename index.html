@@ -5,14 +5,88 @@
 
     <link rel="stylesheet" href="index.css">
 
+    <script src="https://kit.fontawesome.com/fa228b7acf.js" crossorigin="anonymous"></script>
     <script src="./index.js" defer></script>
   </head>
 
   <body>
-    <div class="transitionContainer">
-      <h1 class="logoText">R</h1>
+    <span class="tooltip tooltipVanilla" id="vanillaTooltip">Vanilla</span>
+    <span class="tooltip tooltipModded" id="moddedTooltip">Modded</span>
+    <span class="tooltip tooltipSettings" id="settingsTooltip">Settings</span>
+
+    <div class="sideContainer">
+      <i class="fas fa-cube sideContainerItem" id="vanillaButton"></i>
+      <i class="fas fa-tools sideContainerItem" id="moddedButton"></i>
+      <i class="fas fa-cog sideContainerItem sideContainerSettings" id="settingsButton"></i>
+    </div>
+    
+    <div class="selectionContainer"></div>
+    <div class="menuContainer"></div>
+
+    <div class="transitionContainer" id="transitionContainer">
+      <div class="logo">
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" width="406.188mm" height="50.7996mm" version="1.1" viewBox="0 0 33.849 4.2333">
+          <metadata>
+              <rdf:RDF>
+              <cc:Work rdf:about="">
+              <dc:format>image/svg+xml</dc:format>
+              <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+              <dc:title/>
+              </cc:Work>
+              </rdf:RDF>
+          </metadata>
+          <g transform="translate(-20.145 -50.258)">
+              <g transform="matrix(.1998 0 0 .1998 15.776 39.74)" fill="#36393f">
+                <g transform="matrix(1.714 0 0 1.714 -98.966 -22.403)" fill="#ffffff" stroke-width=".26458" aria-label="Revolution">
+                  <path d="m76.88 55.94h3.7761l-3.2681-4.1148c1.4563-0.4572 2.3537-1.7103 2.3537-3.9285-0.06773-2.8109-1.9812-3.9455-4.4535-3.9455h-4.7921v10.419l3.0649 1.5702v-3.81h0.54187zm-3.3189-6.4177v-2.7432h1.778c1.9135 0 1.9135 2.7432 0 2.7432z"/>
+                </g>
+              </g>
+          </g>
+        </svg>
+      </div>
       <div class="loadingBarBack">
         <div class="loadingBarFront"></div>
+      </div>
+    </div>
+
+    <div class="titleBar">
+      <div class="wordmark">
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" width="33.849mm" height="4.2333mm" version="1.1" viewBox="0 0 33.849 4.2333">
+          <metadata>
+              <rdf:RDF>
+              <cc:Work rdf:about="">
+              <dc:format>image/svg+xml</dc:format>
+              <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+              <dc:title/>
+              </cc:Work>
+              </rdf:RDF>
+          </metadata>
+          <g transform="translate(-20.145 -50.258)">
+              <g transform="matrix(.1998 0 0 .1998 15.776 39.74)" fill="#36393f">
+              <g transform="matrix(1.714 0 0 1.714 -98.966 -22.403)" fill="#72767d" stroke-width=".26458" aria-label="Revolution">
+              <path d="m76.88 55.94h3.7761l-3.2681-4.1148c1.4563-0.4572 2.3537-1.7103 2.3537-3.9285-0.06773-2.8109-1.9812-3.9455-4.4535-3.9455h-4.7921v10.419l3.0649 1.5702v-3.81h0.54187zm-3.3189-6.4177v-2.7432h1.778c1.9135 0 1.9135 2.7432 0 2.7432z"/>
+              <path d="m84.5 46.796h4.3812l0.90204-2.8448h-8.3481v11.989h7.2122l1.1359-2.8617h-5.2832v-1.7949h4.3253l0.96885-2.6247h-5.2942z"/>
+              <path d="m96.556 49.811-0.54187 2.8279h-0.0508l-0.54187-2.8448-1.8796-5.8589h-3.2512l4.318 11.989h2.7771l4.318-11.989h-3.2512z"/>
+              <path d="m101.89 51.995c0 2.7432 2.4892 4.1148 4.9784 4.1148s4.9615-1.3716 4.9615-4.1148v-4.0979c0-2.7432-2.4892-4.1148-4.9784-4.1148s-4.9615 1.3547-4.9615 4.1148zm3.0311-4.0979c0-0.88053 0.94827-1.3547 1.8965-1.3547 0.98213 0 1.9812 0.42333 1.9812 1.3547v4.0979c0 0.8636-0.9652 1.3039-1.9304 1.3039s-1.9473-0.42333-1.9473-1.3039z"/>
+              <path d="m113.44 55.94h7.926l-0.78578-2.9972h-4.0922v-8.9916h-3.048z"/>
+              <path d="m125.39 43.952h-3.0649v7.9756c-0.0169 5.6219 9.5504 5.6219 9.5673 0v-7.9756h-3.0649v7.9756c-0.0169 1.9304-3.4375 1.9304-3.4375 0z"/>
+              <path d="m142.41 46.813v-2.8787h-9.4294v2.8787h3.182v9.1271h3.0649v-9.1271z"/>
+              <path d="m146.63 43.952h-3.0311v11.989h3.0311z"/>
+              <path d="m148.24 51.995c0 2.7432 2.4892 4.1148 4.9784 4.1148s4.9615-1.3716 4.9615-4.1148v-4.0979c0-2.7432-2.4892-4.1148-4.9784-4.1148s-4.9615 1.3547-4.9615 4.1148zm3.0311-4.0979c0-0.88053 0.94827-1.3547 1.8965-1.3547 0.98213 0 1.9812 0.42333 1.9812 1.3547v4.0979c0 0.8636-0.9652 1.3039-1.9304 1.3039s-1.9473-0.42333-1.9473-1.3039z"/>
+              <path d="m159.79 55.94h3.0311v-4.7921l-0.38947-2.3199 0.0847-0.01693 1.0499 2.4045 2.7093 4.7244h3.0649v-11.989h-3.0141v5.4356c0.0169 0 0.32173 2.0659 0.33867 2.0659l-0.0847 0.01693-1.016-2.4045-2.8956-5.1139h-2.8787z"/>
+              </g>
+              </g>
+          </g>
+        </svg>
+      </div>
+      <div class="titleBarButton titleBarMinimize" id="titleBarMinimize" role="button">
+        <svg width="12" height="12" viewBox="0 0 12 12"><rect stroke="#fff" stroke-width="2" width="10" height="1" x="1" y="6"></rect></svg>
+      </div>
+      <div class="titleBarButton titleBarMaximize" id="titleBarMaximize" role="button">
+        <svg width="12" height="12" viewBox="0 0 12 12"><rect width="9" height="9" x="1.5" y="2" fill="none" stroke="#fff" stroke-width="2" shape-rendering="crispEdges"></rect></svg>
+      </div>
+      <div class="titleBarButton titleBarExit" id="titleBarExit" role="button">
+        <svg width="12" height="12" viewBox="0 0 12 12"><polygon stroke="#fff" stroke-width="2" points="11 1.576 6.583 6 11 10.424 10.424 11 6 6.583 1.576 11 1 10.424 5.417 6 1 1.576 1.576 1 6 5.417 10.424 1"></polygon></svg>
       </div>
     </div>
   </body>

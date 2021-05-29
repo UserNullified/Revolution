@@ -1,3 +1,13 @@
-var lastWindow = "main"
+const buttonNames = ['vanilla', 'modded', 'settings']
+buttonNames.forEach(buttonName => {
+    document.getElementById(buttonName + 'Button').addEventListener("mouseover", function() {
+        document.getElementById(buttonName + 'Tooltip').style.opacity = "1"
+        document.getElementById(buttonName + 'Tooltip').style.transform = "scale(1)"
+    });
+    
+    document.getElementById(buttonName + 'Button').addEventListener("mouseout", function() {
+        document.getElementById(buttonName + 'Tooltip').style.opacity = "0"
+        document.getElementById(buttonName + 'Tooltip').style.transform = "scale(1.05)"
+    });
+});
 
-// document.getElementById('menuContainer').style.backgroundImage = "url('assets/background" + (Math.floor(Math.random() * 3) + 1) + ".png')"
