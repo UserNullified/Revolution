@@ -1,6 +1,8 @@
-# **Revolution** 🚀
-### Let's revolutionize the Minecraft launcher!
+![Imgur](https://i.imgur.com/kL7oe4v.png)
 
-#### Revolution is a launcher for Minecraft, providing vanilla and modded profile support.
+# **Revolution**
+### A new spin on the Minecraft launcher!
 
-##### Built with ❤️ by @UserNullified
+#### Revolution is a launcher for Minecraft, providing vanilla and modded profile support, custom themes, and more!
+
+##### Built with Electron & ❤️ by @UserNullified
