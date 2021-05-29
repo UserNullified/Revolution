@@ -1,4 +1,6 @@
-![Imgur](https://i.imgur.com/kL7oe4v.png)
+<p align="center">
+  <img src="https://i.imgur.com/kL7oe4v.png">
+</p>
 
 # **Revolution**
 ### A new spin on the Minecraft launcher!
