@@ -1,46 +1,58 @@
+const { app, BrowserWindow, dialog } = require('electron');
+const path = require('path');
+const serve = require('electron-serve');
+const loadURL = serve({ directory: 'public' });
 
-const { app, BrowserWindow, ipcMain } = require('electron')
-const path = require('path')
+let mainWindow;
 
-var mainWindow;
-function createWindow () {
-
-  mainWindow = new BrowserWindow({
-    width: 1280,
-    height: 720,
-    frame: false,
-    webPreferences: {
-      preload: path.join(__dirname, 'preload.js')
-    }
-  })
-
-  mainWindow.loadFile('index.html')
-
+function isDev() {
+    return !app.isPackaged;
 }
 
-app.whenReady().then(() => {
-  createWindow()
+function createWindow() {
+    mainWindow = new BrowserWindow({
+        width: 1280,
+        height: 720,
+        minWidth: 1280,
+        minHeight: 720,
+        webPreferences: {
+            contextIsolation: true,
+            preload: path.join(__dirname, 'preload.js')
+        },
+        icon: isDev() ? path.join(process.cwd(), 'public/favicon.png') : path.join(__dirname, 'public/favicon.png'),
+        frame: false,
+        show: false
+    });
 
-  app.on('activate', function () {
-    if (BrowserWindow.getAllWindows().length === 0) createWindow()
-  })
-})
+    // TODO Comment when packaging!
+
+    // This block of code is intended for development purpose only.
+    // Delete this entire block of code when you are ready to package the application.
+    if (isDev()) {
+        mainWindow.loadURL('http://localhost:5000/');
+    } else {
+        loadURL(mainWindow);
+    }
+    
+    //TODO Uncomment when packaging!
+    // loadURL(mainWindow);
+
+    mainWindow.on('closed', function () {
+        mainWindow = null
+    });
+
+    mainWindow.once('ready-to-show', () => {
+        mainWindow.show()
+    });
+}
+
+app.on('ready', createWindow);
+
 
 app.on('window-all-closed', function () {
-  if (process.platform !== 'darwin') app.quit()
-})
+    if (process.platform !== 'darwin') app.quit()
+});
 
-ipcMain.on('exit', (evt, arg) => {
-  app.quit()
-})
-ipcMain.on('maximize', (evt, arg) => {
-  if (!mainWindow.isMaximized()) {
-    mainWindow.maximize();
-  } else {
-    mainWindow.unmaximize();
-  }
-})
-
-ipcMain.on('minimize', (evt, arg) => {
-  mainWindow.minimize();
-})
+app.on('activate', function () {
+    if (mainWindow === null) createWindow()
+});
