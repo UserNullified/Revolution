@@ -11,7 +11,7 @@
 
 ### Getting Support
 
-##### You can reach me on Discord over at *null#4193*.
+##### You can reach me on Discord over at null#4193.
 ##### You can also always just use Github Issues!
 
 ## 
