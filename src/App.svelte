@@ -1,7 +1,10 @@
 <script>
 	import Emoji from './Emoji.svelte';
 	import Logo from './Logo.svelte';
+import NavbarItem from './NavbarItem.svelte';
 	import TitlebarButton from './TitlebarButton.svelte';
+
+	export let accounts = [];
 
 	export let profileList = [];
 
@@ -73,7 +76,15 @@
 
 	<div class="app">
 
-		<div class="navbar"></div>
+		<div class="navbar">
+			<NavbarItem type="add"></NavbarItem>
+			{#if accounts.length == 0}
+				<NavbarItem type="login"></NavbarItem>
+			{:else}
+				<NavbarItem type="account"></NavbarItem>
+			{/if}
+			<NavbarItem type="extra"></NavbarItem>
+		</div>
 
 		<div class="sidebar-container">
 			<div class="searchbar">
@@ -196,6 +207,9 @@
 		flex-grow: 0;
 
 		background-color: var(--background-color-dark-1);
+
+		display: flex;
+		flex-direction: column;
 	}
 
 	.sidebar-container {
@@ -208,7 +222,7 @@
 	}
 
 	.searchbar {
-		height: 48px;
+		height: 64px;
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -217,7 +231,7 @@
 	}
 
 	.searchbar input {
-		height: 28px;
+		height: 36px;
 		width: 90%;
 		margin: 0;
 		background-color: var(--background-color-dark-1);
