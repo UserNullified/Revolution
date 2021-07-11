@@ -15,4 +15,4 @@
 ##### You can also always just use Github Issues!
 
 ## 
-##### Built with Electron & ❤️ by [@UserNullified](https://github.com/UserNullified)
+##### Built with Electron, Svelte & ❤️ by [@UserNullified](https://github.com/UserNullified)
