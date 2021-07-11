@@ -4,6 +4,63 @@
 	import TitlebarButton from './TitlebarButton.svelte';
 
 	export let profileList = [];
+
+	export let filteredProfileList = []
+
+	export let search = '';
+	$: {
+		if(search.length != 0) {
+			let searchFilter = {
+				name: '',
+				type: '',
+				version: ''
+			};
+
+			let lowercaseSearch = search.toLowerCase();
+			let trimmedSearch = lowercaseSearch.replace(/ /g, '');
+			let splitSearch = trimmedSearch.split(';');
+
+			splitSearch.forEach((part) => {
+				if(part.startsWith('type:')) {
+					searchFilter.type = part.replace('type:', '');
+				} else if(part.startsWith('version:')) {
+					searchFilter.version = part.replace('version:', '');
+				} else if(part.length != 0){
+					searchFilter.name = part;
+				}
+			});
+
+			let candidates = profileList;
+
+			if(searchFilter.name.length != 0) {
+				candidates = candidates.filter(profile => {
+					if(profile.name.toLowerCase().replace(/ /g, '').indexOf(searchFilter.name) != -1) {
+						return profile;
+					}
+				});
+			}
+
+
+			if(searchFilter.type.length != 0) {
+				candidates = candidates.filter(profile => {
+					if(profile.type.toLowerCase().replace(/ /g, '').indexOf(searchFilter.type) != -1) {
+						return profile;
+					}
+				})
+			}
+			
+			if(searchFilter.version.length != 0) {
+				candidates = candidates.filter(profile => {
+					if(profile.version.toLowerCase().replace(/ /g, '').indexOf(searchFilter.version) != -1) {
+						return profile;
+					}
+				})
+			}
+
+			filteredProfileList = candidates;
+		}
+
+	}
 </script>
 
 <div class="app-mount">
@@ -13,29 +70,59 @@
 		<TitlebarButton type="maximize"></TitlebarButton>
 		<TitlebarButton type="close"></TitlebarButton>
 	</div>
+
 	<div class="app">
+
 		<div class="navbar"></div>
-		{#if profileList.length == 0}
-			<div class="sidebar sidebar-empty">
-				<div class="no-profile-container">
-					<Emoji></Emoji>
-					<div class="no-profile-description">Nothing here yet!<br>Add a profile with the button in the top left corner.</div>
-				</div>
+
+		<div class="sidebar-container">
+			<div class="searchbar">
+				<input type="text" autocomplete="off" placeholder="Search..." bind:value="{search}">
 			</div>
-		{:else}
-			<div class="sidebar">
-				{#each profileList as profile}
-					<div class="profile" id="{profile.id}">
-						<div class="profile-title">{profile.name.length > 13 ? profile.name.substring(0, 8) + "..." : profile.name}</div>
-						<div class="profile-description">
-							<div class="profile-time">{profile.playTime}</div>
-							<div class="profile-type">{profile.type}</div>
-							<div class="profile-version">{profile.version}</div>
-						</div>
+			<div class="separator"></div>
+			{#if profileList.length == 0}
+				<div class="sidebar sidebar-empty">
+					<div class="no-profile-container">
+						<Emoji></Emoji>
+						<div class="no-profile-description">Nothing here yet!<br>Add a profile with the button in the top left corner.</div>
 					</div>
-				{/each}
-			</div>
-		{/if}
+				</div>
+			{:else if search.length != 0 && filteredProfileList.length != 0}
+				<div class="sidebar">
+					{#each filteredProfileList as profile}
+						<div class="profile" id="{profile.id}">
+							<div class="profile-title">{profile.name.length > 14 ? profile.name.substring(0, 8) + "..." : profile.name}</div>
+							<div class="profile-description">
+								<div class="profile-time">{profile.playTime}</div>
+								<div class="profile-type">{profile.type}</div>
+								<div class="profile-version">{profile.version}</div>
+							</div>
+						</div>
+					{/each}
+				</div>
+			{:else if search.length != 0 && filteredProfileList.length == 0}
+				<div class="sidebar sidebar-empty">
+					<div class="no-profile-container">
+						<Emoji></Emoji>
+						<div class="no-profile-description">Seems like your search returned nothing!<br>Try searching for something else.</div>
+					</div>
+				</div>
+			{:else}
+				<div class="sidebar">
+					{#each profileList as profile}
+						<div class="profile" id="{profile.id}">
+							<div class="profile-title">{profile.name.length > 14 ? profile.name.substring(0, 8) + "..." : profile.name}</div>
+							<div class="profile-description">
+								<div class="profile-time">{profile.playTime}</div>
+								<div class="profile-type">{profile.type}</div>
+								<div class="profile-version">{profile.version}</div>
+							</div>
+						</div>
+					{/each}
+				</div>
+			{/if}
+		</div>
+
 		<div class="mainbar"></div>
 	</div>
 </div>
@@ -111,10 +198,42 @@
 		background-color: var(--background-color-dark-1);
 	}
 
-	.sidebar {
+	.sidebar-container {
 		width: 256px;
 
 		flex-grow: 0;
+
+		display: flex;
+		flex-direction: column;
+	}
+
+	.searchbar {
+		height: 48px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		background-color: var(--background-color-dark-2);
+	}
+
+	.searchbar input {
+		height: 28px;
+		width: 90%;
+		margin: 0;
+		background-color: var(--background-color-dark-1);
+		border: none;
+		color: white;
+		border-radius: 8px;
+	}
+
+	.separator {
+		width: 100%;
+		height: 2px;
+		background-color: var(--background-color-dark-1);
+	}
+
+	.sidebar {
+		flex-grow: 1;
 
 		background-color: var(--background-color-dark-2);
 
@@ -194,7 +313,7 @@
 	.no-profile-description {
 		margin: 0px 16px;
 
-		height: 64px;
+		height: 96px;
 
 		flex-grow: 0;
 
