@@ -9,9 +9,11 @@ window.addEventListener('DOMContentLoaded', () => {
     exitButton.addEventListener('click', () => {
         ipcRenderer.send('exit')
     });
+
     maximizeButton.addEventListener('click', () => {
         ipcRenderer.send('maximize')
     });
+
     minimizeButton.addEventListener('click', () => {
         ipcRenderer.send('minimize')
     });
