@@ -1,4 +1,4 @@
-const { app, BrowserWindow, dialog } = require('electron');
+const { app, BrowserWindow, dialog, ipcMain } = require('electron');
 const path = require('path');
 const serve = require('electron-serve');
 const loadURL = serve({ directory: 'public' });
@@ -58,3 +58,19 @@ app.on('window-all-closed', function () {
 app.on('activate', function () {
     if (mainWindow === null) createWindow()
 });
+
+ipcMain.on('exit', () => {
+    app.quit()
+})
+
+ipcMain.on('maximize', () => {
+    if (!mainWindow.isMaximized()) {
+        mainWindow.maximize();
+    } else {
+        mainWindow.unmaximize();
+    }
+})
+
+ipcMain.on('minimize', () => {
+    mainWindow.minimize();
+})
