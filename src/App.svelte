@@ -1,6 +1,6 @@
 <script>
 	import Emoji from './Emoji.svelte';
-import Logo from './Logo.svelte';
+	import Logo from './Logo.svelte';
 	import TitlebarButton from './TitlebarButton.svelte';
 
 	export let profileList = [];
@@ -41,7 +41,7 @@ import Logo from './Logo.svelte';
 </div>
 
 <style>
-	@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600&display=swap');
+	@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400&display=swap');
 
 	:root {
 		--background-color-dark-1: hsl(0, 0%, 11.5%);
@@ -123,11 +123,16 @@ import Logo from './Logo.svelte';
 
 	.profile {
 		border-radius: 4px;
+
 		margin: 8px 8px 0px 8px;
+
 		display: flex;
 		flex-direction: column;
+
 		color: gray;
+
 		transition: 0.05s ease-in;
+
 		user-select: none;
 		cursor: pointer;
 	}
@@ -141,17 +146,23 @@ import Logo from './Logo.svelte';
 		display: flex;
 		justify-content: center;
 		align-items: center;
+
 		width: 100%;
 		height: 64px;
+
 		flex-grow: 1;
+
 		font-size: 32px;
 		text-align: center;
 	}
 
 	.profile-description {
 		margin-bottom: 8px;
+
 		width: 100%;
+
 		flex-grow: 0;
+
 		display: flex;
 	}
 
@@ -192,7 +203,6 @@ import Logo from './Logo.svelte';
 		align-items: center;
 
 		text-align: center;
-		font-weight: 600;
 		color: #ffffff99;
 	}
 
