@@ -19,15 +19,17 @@ function createWindow() {
             contextIsolation: true,
             preload: path.join(__dirname, 'preload.js')
         },
+
+        // TODO Comment when packaging!
         icon: isDev() ? path.join(process.cwd(), 'public/favicon.png') : path.join(__dirname, 'public/favicon.png'),
+
+        // TODO Uncomment when packaging!
+        // icon: path.join(__dirname, 'public/favicon.png'),
         frame: false,
         show: false
     });
 
     // TODO Comment when packaging!
-
-    // This block of code is intended for development purpose only.
-    // Delete this entire block of code when you are ready to package the application.
     if (isDev()) {
         mainWindow.loadURL('http://localhost:5000/');
     } else {
