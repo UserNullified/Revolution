@@ -21,7 +21,7 @@ function createWindow() {
         },
 
         // TODO Comment when packaging!
-        icon: isDev() ? path.join(process.cwd(), 'public/assets/favicon.png') : path.join(__dirname, 'public/assets/favicon.png'),
+        icon: isDev() ? path.join(process.cwd(), 'public/build/assets/favicon.png') : path.join(__dirname, 'public/build/assets/favicon.png'),
 
         // TODO Uncomment when packaging!
         // icon: path.join(__dirname, 'public/favicon.png'),
