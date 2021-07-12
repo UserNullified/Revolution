@@ -14,7 +14,7 @@
     }
 </style>
 
-<div class="{type == "add" ? "navbar-item navbar-add" : "navbar-item"}">
+<div class="{type == "add" ? "navbar-item navbar-add" : "navbar-item"}" id={type}>
     {#if type == "add"}
         <svg class="svg-inline--fa fa-plus fa-w-14" aria-hidden="true" data-icon="plus" data-prefix="fas" focusable="false" role="img" version="1.1" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
             <path d="m45.714 28.571h-10.286v-10.286c0-1.2622-1.0236-2.2857-2.2857-2.2857h-2.2857c-1.2622 0-2.2857 1.0236-2.2857 2.2857v10.286h-10.286c-1.2622 0-2.2857 1.0236-2.2857 2.2857v2.2857c0 1.2622 1.0236 2.2857 2.2857 2.2857h10.286v10.286c0 1.2622 1.0236 2.2857 2.2857 2.2857h2.2857c1.2622 0 2.2857-1.0236 2.2857-2.2857v-10.286h10.286c1.2622 0 2.2857-1.0236 2.2857-2.2857v-2.2857c0-1.2622-1.0236-2.2857-2.2857-2.2857z" fill="#fff" stroke-width=".071429"/>
