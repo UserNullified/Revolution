@@ -1,7 +1,7 @@
 <script>
-	import Emoji from './Emoji.svelte';
-	import Logo from './Logo.svelte';
-import NavbarItem from './NavbarItem.svelte';
+
+	import SVGIcon from './SVGIcon.svelte';
+	import NavbarItem from './NavbarItem.svelte';
 	import TitlebarButton from './TitlebarButton.svelte';
 
 	export let accounts = [];
@@ -64,11 +64,18 @@ import NavbarItem from './NavbarItem.svelte';
 		}
 
 	}
+
+	function addProfile() {
+
+	}
 </script>
 
 <div class="app-mount">
+	
 	<div class="titlebar">
-		<Logo></Logo>
+		<div class="logo">
+			<SVGIcon type="logo"/>
+		</div>
 		<TitlebarButton type="minimize"></TitlebarButton>
 		<TitlebarButton type="maximize"></TitlebarButton>
 		<TitlebarButton type="close"></TitlebarButton>
@@ -77,7 +84,7 @@ import NavbarItem from './NavbarItem.svelte';
 	<div class="app">
 
 		<div class="navbar">
-			<NavbarItem type="add"></NavbarItem>
+			<NavbarItem type="add" on:click={addProfile}></NavbarItem>
 			{#if accounts.length == 0}
 				<NavbarItem type="login"></NavbarItem>
 			{:else}
@@ -87,21 +94,27 @@ import NavbarItem from './NavbarItem.svelte';
 		</div>
 
 		<div class="sidebar-container">
+
 			<div class="searchbar">
 				<input type="text" autocomplete="off" placeholder="Search..." bind:value="{search}">
 			</div>
+
 			<div class="separator"></div>
+
 			{#if profileList.length == 0}
+
 				<div class="sidebar sidebar-empty">
 					<div class="no-profile-container">
-						<Emoji></Emoji>
+						<SVGIcon type="no-profile-emoji"/>
 						<div class="no-profile-description">Nothing here yet!<br>Add a profile with the button in the top left corner.</div>
 					</div>
 				</div>
+
 			{:else if search.length != 0 && filteredProfileList.length != 0}
+
 				<div class="sidebar">
 					{#each filteredProfileList as profile}
-						<div class="profile" id="{profile.id}">
+						<div class="profile" id="{profile.id}" tabindex="0">
 							<div class="profile-title">{profile.name.length > 14 ? profile.name.substring(0, 8) + "..." : profile.name}</div>
 							<div class="profile-description">
 								<div class="profile-time">{profile.playTime}</div>
@@ -111,17 +124,21 @@ import NavbarItem from './NavbarItem.svelte';
 						</div>
 					{/each}
 				</div>
+
 			{:else if search.length != 0 && filteredProfileList.length == 0}
+
 				<div class="sidebar sidebar-empty">
 					<div class="no-profile-container">
-						<Emoji></Emoji>
+						<SVGIcon type="no-profile-emoji"/>
 						<div class="no-profile-description">Seems like your search returned nothing!<br>Try searching for something else.</div>
 					</div>
 				</div>
+
 			{:else}
+
 				<div class="sidebar">
 					{#each profileList as profile}
-						<div class="profile" id="{profile.id}">
+						<div class="profile" id="{profile.id}" tabindex="0">
 							<div class="profile-title">{profile.name.length > 14 ? profile.name.substring(0, 8) + "..." : profile.name}</div>
 							<div class="profile-description">
 								<div class="profile-time">{profile.playTime}</div>
@@ -131,10 +148,13 @@ import NavbarItem from './NavbarItem.svelte';
 						</div>
 					{/each}
 				</div>
+
 			{/if}
 		</div>
 
-		<div class="mainbar"></div>
+		<div class="mainbar mainbar-flex">
+			<SVGIcon type="initial"/>
+		</div>
 	</div>
 </div>
 
@@ -142,15 +162,15 @@ import NavbarItem from './NavbarItem.svelte';
 	@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400&display=swap');
 
 	:root {
-		--background-color-dark-1: hsl(0, 0%, 11.5%);
-		--background-color-dark-2: hsl(0, 0%, 17.5%);
-		--background-color-dark-3: hsl(0, 0%, 22.5%);
+		--background-color-dark-1: #1d1d1d;
+		--background-color-dark-2: #2d2d2d;
+		--background-color-dark-3: #393939;
 
 		--scrollbar-color-thumb: #202225;
 
-		--error: hsl(12, 65%, 54%);
-		--warning: rgb(217, 171, 49);
-		--success: hsl(80, 60%, 50%);
+		--error: #d65c3d;
+		--warning: #d9ac30;
+		--success: #99cc33;
 	}
 
 	* {
@@ -191,7 +211,15 @@ import NavbarItem from './NavbarItem.svelte';
 		background-color: var(--background-color-dark-1);
 
 		display: flex;
+
+		-webkit-app-region: drag;
 	}
+
+	.logo {
+        height: 18px;
+        width: 64px;
+        margin-right: auto;
+    }
 
 	.app {
 		height: calc(100% - 18px);
@@ -239,6 +267,12 @@ import NavbarItem from './NavbarItem.svelte';
 		color: white;
 		border-radius: 8px;
 	}
+
+	.searchbar input:focus {
+        outline: none !important;
+        border: 2px solid aqua;
+        border-radius: 8px;
+    }
 
 	.separator {
 		width: 100%;
@@ -343,5 +377,11 @@ import NavbarItem from './NavbarItem.svelte';
 		flex-grow: 1;
 
 		background-color: var(--background-color-dark-3);
+	}
+
+	.mainbar-flex {
+		display:flex;
+		justify-content: center;
+		align-items: center;
 	}
 </style>
