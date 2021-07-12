@@ -17,12 +17,12 @@ import SVGIcon from "./SVGIcon.svelte";
 
 </style>
 
-<div class="{type == "add" ? "navbar-item navbar-add" : "navbar-item"} id={"navbar-" + type}" on:click>
-    {#if type == "add"}
+<div class="{type == "addProfile" ? "navbar-item navbar-add" : "navbar-item"} id={"navbar-" + type}" on:click>
+    {#if type == "addProfile"}
         <SVGIcon {type}/>
     {:else if type == "login"}
         <SVGIcon {type}/>
-    {:else if type == "account"}
+    {:else if type == "accountManager"}
         <SVGIcon {type}/>
     {:else if type == "extra"}
         <SVGIcon {type}/>
