@@ -1,5 +1,8 @@
 <script>
 
+	import searchInput from './searchInput';
+	import clickOutside from './clickOutside.js';
+
 	import SVGIcon from './SVGIcon.svelte';
 	import NavbarItem from './NavbarItem.svelte';
 	import TitlebarButton from './TitlebarButton.svelte';
@@ -8,67 +11,121 @@
 
 	export let profileList = [];
 
-	export let filteredProfileList = []
+	export let filteredProfileList = [];
 
 	export let search = '';
 	$: {
-		if(search.length != 0) {
-			let searchFilter = {
-				name: '',
-				type: '',
-				version: ''
-			};
+		if(search) {
+			filteredProfileList = searchInput(profileList, search);
+		}
+	}
 
-			let lowercaseSearch = search.toLowerCase();
-			let trimmedSearch = lowercaseSearch.replace(/ /g, '');
-			let splitSearch = trimmedSearch.split(';');
+	export let tabs = [];
+	$: {
+		tabs.forEach(id => {
+			document.getElementById(id).style.zIndex = tabs.indexOf(id) + 1;
+		})
+	}
 
-			splitSearch.forEach((part) => {
-				if(part.startsWith('type:')) {
-					searchFilter.type = part.replace('type:', '');
-				} else if(part.startsWith('version:')) {
-					searchFilter.version = part.replace('version:', '');
-				} else if(part.length != 0){
-					searchFilter.name = part;
-				}
-			});
+	function addTab(id) {
+		if(tabs.indexOf(id) != -1) {
+			tabs.splice(tabs.indexOf(id), 1);	
+			tabs.push(id);
+			tabs = tabs;
+		} else {
+			tabs.push(id);
+			tabs = tabs;
+		}
+	}
 
-			let candidates = profileList;
+	function removeTab(id) {
+		tabs.splice(tabs.indexOf(id), 1)
+	}
 
-			if(searchFilter.name.length != 0) {
-				candidates = candidates.filter(profile => {
-					if(profile.name.toLowerCase().replace(/ /g, '').indexOf(searchFilter.name) != -1) {
-						return profile;
-					}
-				});
-			}
+	let randomProfileData = {
+		extras: ['Super ', 'Awesome ', 'Huge '],
+		names: ['Vanilla', 'Forge', 'Fabric'],
+		types: ['Vanilla', 'Forge', 'Fabric'],
+		versions: ['1.16.5', '1.15.5', '1.14.5'],
+		playTimes: ['1m', '1h 24m', '1d 2h']
+	}
 
-
-			if(searchFilter.type.length != 0) {
-				candidates = candidates.filter(profile => {
-					if(profile.type.toLowerCase().replace(/ /g, '').indexOf(searchFilter.type) != -1) {
-						return profile;
-					}
-				})
-			}
-			
-			if(searchFilter.version.length != 0) {
-				candidates = candidates.filter(profile => {
-					if(profile.version.toLowerCase().replace(/ /g, '').indexOf(searchFilter.version) != -1) {
-						return profile;
-					}
-				})
-			}
-
-			filteredProfileList = candidates;
+	function addRandomProfile() {
+		let extra = '';
+		for (let i = 0; i < Math.floor(Math.random() * 5); i++) {
+			extra += randomProfileData.extras[Math.floor(Math.random() * 3)]
 		}
 
+		let nameTypeIndex = Math.floor(Math.random() * 3);
+
+		let profile = {
+			name: extra + randomProfileData.names[nameTypeIndex],
+			type: randomProfileData.types[nameTypeIndex],
+			version: randomProfileData.versions[Math.floor(Math.random() * 3)],
+			playTime: randomProfileData.playTimes[Math.floor(Math.random() * 3)]
+		}
+
+		profileList.push(profile)	
+		profileList = profileList;
+	}
+	
+	let x = 0;
+	let y = 0;
+
+	function isInViewport(el) {
+		let box = el.getBoundingClientRect();
+		if(box.bottom > window.innerHeight) {
+			return (box.bottom - window.innerHeight) + 5;
+		} else {
+			return 0;
+		}
 	}
 
-	function addProfile() {
+	function setContextMenuValues(e, id, filtered = false) {
+		x = e.clientX;
+		y = e.clientY;
 
+		document.querySelector('.context-menu').style.display = 'flex';
+
+		document.querySelector('.context-menu').style.left = `${x}px`;
+		document.querySelector('.context-menu').style.top = `${y}px`;
+
+		y -= isInViewport(document.querySelector('.context-menu'));
+
+		document.querySelector('.context-menu').style.top = `${y}px`;
+
+		if(!filtered) {
+			document.querySelector('.context-menu-title').textContent = profileList[parseInt(id)].name.length < 64 ? profileList[parseInt(id)].name : profileList[parseInt(id)].name.substr(0, 61) + '...';
+		} else {
+			document.querySelector('.context-menu-title').textContent = filteredProfileList[parseInt(id)].name.length < 64 ? filteredProfileList[parseInt(id)].name : filteredProfileList[parseInt(id)].name.substr(0, 61) + '...';
+		}
+	}
+
+	async function hideContextMenu() {
+		document.querySelector('.context-menu').style.display = 'none';
 	}
 </script>
+
+<div class="context-menu" id="context-menu" use:clickOutside on:click_outside={hideContextMenu}>
+	<div class="context-menu-title" id="context-menu-title"></div>
+	<div class="context-menu-button">
+		<div class="context-menu-icon"><SVGIcon type="play"/></div>
+		<div class="context-menu-text">Play</div>
+	</div>
+	<div class="context-menu-button">
+		<div class="context-menu-icon"><SVGIcon type="folder"/></div>
+		<div class="context-menu-text">Open Folder</div>
+	</div>
+	<div class="context-menu-button">
+		<div class="context-menu-icon"><SVGIcon type="configure"/></div>
+		<div class="context-menu-text">Configure</div>
+	</div>
+	<div class="context-menu-separator"></div>
+	<div class="context-menu-button">
+		<div class="context-menu-icon"><SVGIcon type="delete"/></div>
+		<div class="context-menu-text">Delete</div>
+	</div>
+</div>
 
 <div class="app-mount">
 	
@@ -84,11 +141,12 @@
 	<div class="app">
 
 		<div class="navbar">
-			<NavbarItem type="add" on:click={addProfile}></NavbarItem>
+			<!--on:click={() => {addTab('profileMaker')}}-->
+			<NavbarItem type="addProfile" on:click={addRandomProfile}></NavbarItem>
 			{#if accounts.length == 0}
-				<NavbarItem type="login"></NavbarItem>
+				<NavbarItem type="login" on:click={() => {addTab('accountManager')}}></NavbarItem>
 			{:else}
-				<NavbarItem type="account"></NavbarItem>
+				<NavbarItem type="accountManager" on:click={() => {addTab('accountManager')}}></NavbarItem>
 			{/if}
 			<NavbarItem type="extra"></NavbarItem>
 		</div>
@@ -96,7 +154,7 @@
 		<div class="sidebar-container">
 
 			<div class="searchbar">
-				<input type="text" autocomplete="off" placeholder="Search..." bind:value="{search}">
+				<input type="text" autocomplete="off" placeholder="Search..." spellcheck="false" bind:value="{search}">
 			</div>
 
 			<div class="separator"></div>
@@ -114,8 +172,8 @@
 
 				<div class="sidebar">
 					{#each filteredProfileList as profile}
-						<div class="profile" id="{profile.id}" tabindex="0">
-							<div class="profile-title">{profile.name.length > 14 ? profile.name.substring(0, 8) + "..." : profile.name}</div>
+						<div class="profile" id="{filteredProfileList.indexOf(profile)}" tabindex="0" on:contextmenu|preventDefault={(e) => { setContextMenuValues(e, filteredProfileList.indexOf(profile), true)}} on:click={() => {addTab('profileSettings')}}>
+							<div class="profile-title">{profile.name.length > 12 ? profile.name.substr(0, 9) + "..." : profile.name}</div>
 							<div class="profile-description">
 								<div class="profile-time">{profile.playTime}</div>
 								<div class="profile-type">{profile.type}</div>
@@ -138,8 +196,8 @@
 
 				<div class="sidebar">
 					{#each profileList as profile}
-						<div class="profile" id="{profile.id}" tabindex="0">
-							<div class="profile-title">{profile.name.length > 14 ? profile.name.substring(0, 8) + "..." : profile.name}</div>
+						<div class="profile" id="{profileList.indexOf(profile)}" tabindex="0" on:contextmenu|preventDefault={(e) => { setContextMenuValues(e, profileList.indexOf(profile))}}>
+							<div class="profile-title">{profile.name.length > 12 ? profile.name.substr(0, 9) + "..." : profile.name}</div>
 							<div class="profile-description">
 								<div class="profile-time">{profile.playTime}</div>
 								<div class="profile-type">{profile.type}</div>
@@ -153,7 +211,14 @@
 		</div>
 
 		<div class="mainbar mainbar-flex">
-			<SVGIcon type="initial"/>
+			<div class="initial" id="initial">
+				<SVGIcon type="initial"/>
+			</div>
+
+			<div class="profile-maker" id="profileMaker"></div>
+			<div class="accountManager" id="accountManager"></div>
+			<div class="settings" id="settings"></div>
+			<div class="profileSettings" id="profileSettings"></div>
 		</div>
 	</div>
 </div>
@@ -163,8 +228,10 @@
 
 	:root {
 		--background-color-dark-1: #1d1d1d;
-		--background-color-dark-2: #2d2d2d;
-		--background-color-dark-3: #393939;
+		--background-color-dark-2: #222222;
+		--background-color-dark-3: #2d2d2d;
+		--background-color-dark-4: #393939;
+		--background-color-dark-5: hsl(0, 0%, 19%);
 
 		--scrollbar-color-thumb: #202225;
 
@@ -187,11 +254,11 @@
 	}
 
 	::-webkit-scrollbar-thumb {
-		background: hsl(0, 0%, 12.5%);
+		background: var(--background-color-dark-1);
 	}
 
 	::-webkit-scrollbar-thumb:hover {
-		background: hsl(0, 0%, 14.5%);
+		background: var(--background-color-dark-2);
 	}
 
 	.app-mount {
@@ -255,7 +322,7 @@
 		justify-content: center;
 		align-items: center;
 
-		background-color: var(--background-color-dark-2);
+		background-color: var(--background-color-dark-3);
 	}
 
 	.searchbar input {
@@ -281,9 +348,11 @@
 	}
 
 	.sidebar {
+		height: calc(100% - 66px);
+
 		flex-grow: 1;
 
-		background-color: var(--background-color-dark-2);
+		background-color: var(--background-color-dark-3);
 
 		overflow-y: scroll;
 	}
@@ -304,9 +373,19 @@
 		cursor: pointer;
 	}
 
+	.profile:last-child {
+		margin-bottom: 8px;
+	}
+
 	.profile:hover {
-		background-color: var(--background-color-dark-3);
+		background-color: var(--background-color-dark-4);
 		color: white;
+	}
+
+	.profile:focus {
+		outline: none !important;
+        border: 2px solid aqua;
+        border-radius: 8px;
 	}
 
 	.profile-title {
@@ -333,6 +412,11 @@
 		display: flex;
 	}
 
+	.profile-description > div {
+		text-align: center;
+		width: 73px;
+	}
+
 	.profile-time {
 		margin-left: 8px;
 		margin-right: auto;
@@ -341,6 +425,67 @@
 	.profile-version {
 		margin-right: 8px;
 		margin-left: auto;
+	}
+
+	.context-menu {
+		position: absolute;
+		display: none;
+		flex-direction: column;
+		z-index: 1000;
+		background-color: var(--background-color-dark-2);
+		border-radius: 8px;
+		box-shadow: black 0px 0px 15px
+	}
+
+	.context-menu-title {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 64px;
+		font-size: 28px;
+		padding: 0px 16px;	
+		background-color: var(--background-color-dark-1);
+		color: white;
+		border-radius: 8px 8px 0px 0px;
+	}
+
+	.context-menu-button {
+		height: 48px;
+		min-width: 128px;
+		background-color: var(--background-color-dark-2);
+		color: white;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		font-size: 18px;
+	}
+
+	.context-menu-button > div {
+		margin-left: 8px;
+	}
+
+	.context-menu-text {
+		margin-right: 20px;
+	}
+
+	.context-menu-button:hover {
+		background-color: var(--background-color-dark-5);
+	}
+
+	.context-menu-button:last-child {
+		border-radius: 0px 0px 8px 8px;
+	}
+
+	.context-menu-icon {
+		width: 48px;
+		height: 48px;
+	}
+
+	.context-menu-separator {
+		background-color: var(--background-color-dark-1);
+		height: 2px;
+		flex-grow: 0;
+		margin: 4px 0px
 	}
 
 	.sidebar-empty {
@@ -374,14 +519,30 @@
 	}
 
 	.mainbar {
+		position: relative; 
+
 		flex-grow: 1;
 
-		background-color: var(--background-color-dark-3);
+		background-color: var(--background-color-dark-4);
 	}
 
-	.mainbar-flex {
-		display:flex;
+	.mainbar > div {
+		position: absolute;
+		top: 0px;
+		left: 0px;
+		width: 100%;
+		height: 100%;
+		z-index: -1;
+	}
+
+	.initial {
+		display: flex;
 		justify-content: center;
 		align-items: center;
+		z-index: 0 !important;
+	}
+
+	.profile-maker {
+		background-color: var(--background-color-dark-3);
 	}
 </style>
